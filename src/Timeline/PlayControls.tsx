@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 
 type PlayControlsProps = {
   time: number;
@@ -8,12 +8,21 @@ type PlayControlsProps = {
 export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
   // TODO: implement time <= maxTime
 
+  const [userInput, setUserInput] = useState(time);
+
   const onTimeChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTime(Number(e.target.value));
+      console.log(e)
+      setTime(userInput);
     },
     [setTime],
   );
+
+  const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => e.target.select()
+
+  const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) =>  setUserInput(Math.round(Number(e.target.value)) );
+
+
 
   return (
     <div
@@ -30,8 +39,10 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           min={0}
           max={2000}
           step={10}
-          value={time}
-          onChange={onTimeChange}
+          value={userInput}
+          onChange={handleUserInput}
+          onBlur={onTimeChange}
+          onFocus={handleFocus}
         />
       </fieldset>
       -
@@ -44,6 +55,7 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           max={2000}
           step={10}
           defaultValue={2000}
+          onFocus={handleFocus}
         />
         Duration
       </fieldset>

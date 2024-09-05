@@ -8,6 +8,7 @@ import { PlayControls } from "./PlayControls";
 export const Timeline = () => {
   // FIXME: performance concerned
   const [time, setTime] = useState(0);
+  //console.log('time', time)
 
   return (
     <div
