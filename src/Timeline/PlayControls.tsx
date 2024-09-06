@@ -9,20 +9,38 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
   // TODO: implement time <= maxTime
 
   const [userInput, setUserInput] = useState(time);
+  //console.log('userInput',userInput)
 
   const onTimeChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(e)
-      setTime(userInput);
+    (e:any) => {    
+      setUserInput(Math.round(Number(e.target.value)))
+     
+    },
+    [setTime],
+  );
+
+ 
+
+  const handleKeydown = useCallback(
+    (e:any) => {
+      if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40  ) { 
+        setTime(userInput)
+      }
+     
+    },
+    [setTime],
+  );
+
+   const handleBlur = useCallback(
+    (e:any) => {
+     
+      setUserInput(Math.round(Number(e.target.value)))
+     
     },
     [setTime],
   );
 
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => e.target.select()
-
-  const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) =>  setUserInput(Math.round(Number(e.target.value)) );
-
-
 
   return (
     <div
@@ -40,9 +58,10 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           max={2000}
           step={10}
           value={userInput}
-          onChange={handleUserInput}
-          onBlur={onTimeChange}
+          onChange={onTimeChange}
+          onBlur={handleBlur}
           onFocus={handleFocus}
+          onKeyDown={handleKeydown}
         />
       </fieldset>
       -
