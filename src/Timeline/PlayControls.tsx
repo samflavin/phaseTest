@@ -7,14 +7,24 @@ type PlayControlsProps = {
 
 export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
   // TODO: implement time <= maxTime
-
+  
   const [userInput, setUserInput] = useState(time);
+  //const [oldValue, setOldValue] = useState(time);
 
   const onTimeChange = useCallback(
-    (e:any) => {    
-    setUserInput(e.target.value.replace(/^0+/, ''))
+    (e:any) => {   
+      console.log(e.target.value)
+      if(e.target.value.includes('-') ||  isNaN(e.target.value) ){
+        setUserInput(0)
+      } else {
+        setUserInput(e.target.value.replace(/^0+/, ''))
+
+      }
+ 
    if(e.nativeEvent.data == undefined || typeof(e.nativeEvent.data) !== 'string') {
     setTime(e.target.value.replace(/^0+/, ''))
+    handleFocus(e)
+
    }
 
     },
@@ -25,9 +35,18 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
 
   const handleKeydown = useCallback(
     (e:any) => {
-      console.log('in key down', e.target.value)
+      console.log('keydown?', e.keyCode)
+
       if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40  ) { 
-        setTime(userInput)
+        setTime(e.target.value)
+        if(e.keyCode ==13) {
+          e.target.blur()
+        }
+       
+      } else if(e.keyCode == 27) {  
+        console.log('mee?')
+         setTime(userInput)
+        handleBlur(e)
       }
      
     },
@@ -36,22 +55,23 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
 
    const handleBlur = useCallback(
     (e:any) => {  
-      setTime(e.target.value)
+      if(e.target.value.includes('-') || isNaN(e.target.value) ){
+        setTime(0)
+      } else {
+
+        if(e.keyCode !== 27) {
+          setTime(e.target.value)
+        } else {
+          setTime(userInput)
+          setUserInput(userInput)
+        }
+      }
+     
      
     },
     [setTime],
   );
 
-  // const handleSelect = useCallback(  
-  //   (e: React.ChangeEvent<HTMLInputElement>) => {  
-
-  //     console.log(' in select,', e.target.value)
-  //      setUserInput(Number(e.target.value.replace(/^0+/, '')))
-  //     setTime(userInput)
-     
-  //   },
-  //   [setTime],
-  // );
 
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => e.target.select()
 
@@ -75,6 +95,10 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           onBlur={handleBlur}
           onFocus={handleFocus}
           onKeyDown={handleKeydown}
+          
+          
+         
+        
       
         />
       </fieldset>
