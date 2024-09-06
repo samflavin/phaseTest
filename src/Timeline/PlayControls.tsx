@@ -9,12 +9,14 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
   // TODO: implement time <= maxTime
 
   const [userInput, setUserInput] = useState(time);
-  //console.log('userInput',userInput)
 
   const onTimeChange = useCallback(
     (e:any) => {    
-      setUserInput(Math.round(Number(e.target.value)))
-     
+    setUserInput(e.target.value.replace(/^0+/, ''))
+   if(e.nativeEvent.data == undefined || typeof(e.nativeEvent.data) !== 'string') {
+    setTime(e.target.value.replace(/^0+/, ''))
+   }
+
     },
     [setTime],
   );
@@ -23,6 +25,7 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
 
   const handleKeydown = useCallback(
     (e:any) => {
+      console.log('in key down', e.target.value)
       if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40  ) { 
         setTime(userInput)
       }
@@ -32,13 +35,23 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
   );
 
    const handleBlur = useCallback(
-    (e:any) => {
-     
-      setUserInput(Math.round(Number(e.target.value)))
+    (e:any) => {  
+      setTime(e.target.value)
      
     },
     [setTime],
   );
+
+  // const handleSelect = useCallback(  
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {  
+
+  //     console.log(' in select,', e.target.value)
+  //      setUserInput(Number(e.target.value.replace(/^0+/, '')))
+  //     setTime(userInput)
+     
+  //   },
+  //   [setTime],
+  // );
 
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => e.target.select()
 
@@ -62,6 +75,7 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           onBlur={handleBlur}
           onFocus={handleFocus}
           onKeyDown={handleKeydown}
+      
         />
       </fieldset>
       -
