@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 
 type PlayControlsProps = {
   time: number;
@@ -7,73 +7,60 @@ type PlayControlsProps = {
 
 export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
   // TODO: implement time <= maxTime
-  
+
   const [userInput, setUserInput] = useState(time);
-  //const [oldValue, setOldValue] = useState(time);
 
-  const onTimeChange = useCallback(
-    (e:any) => {   
-      console.log(e.target.value)
-      if(e.target.value.includes('-') ||  isNaN(e.target.value) ){
-        setUserInput(0)
-      } else {
-        setUserInput(e.target.value.replace(/^0+/, ''))
+  console.log('userInput', userInput)
+  const onTimeChange = 
+    (e: React.ChangeEvent<HTMLInputElement>) => {
 
+const inputString = e.target.value.replace(/^0+/, '')
+
+      if(inputString){
+        setUserInput(parseInt(inputString))
       }
+  
+    };
+
+  const handleKeyDown =
+    (e: any) => {
+      //console.log(e.key)
+      if(e.key === 'Enter'){
+        setTime(Number(userInput));
+    
+    }
+    if( e.key === 'ArrowUp' || e.key === 'ArrowDown' ) {
+      e.target.select()
+    }
+    if( e.key === 'Escape') {
+      setUserInput(time)
+      setTime(time)
+    }
+    if(e.key === '-') {
+      setUserInput(0)
+    }
  
-   if(e.nativeEvent.data == undefined || typeof(e.nativeEvent.data) !== 'string') {
-    setTime(e.target.value.replace(/^0+/, ''))
-    handleFocus(e)
+  }
 
-   }
-
-    },
-    [setTime],
-  );
-
- 
-
-  const handleKeydown = useCallback(
-    (e:any) => {
-      console.log('keydown?', e.keyCode)
-
-      if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40  ) { 
-        setTime(e.target.value)
-        if(e.keyCode ==13) {
-          e.target.blur()
+  const handleClick =
+    (e: any) => {
+      e.target.select()
+        if(e.target.value && Number(e.target.value) !== time  ) {
+          setTime(Number(userInput));
         }
-       
-      } else if(e.keyCode == 27) {  
-        console.log('mee?')
-         setTime(userInput)
-        handleBlur(e)
-      }
-     
-    },
-    [setTime],
-  );
-
-   const handleBlur = useCallback(
-    (e:any) => {  
-      if(e.target.value.includes('-') || isNaN(e.target.value) ){
-        setTime(0)
-      } else {
-
-        if(e.keyCode !== 27) {
-          setTime(e.target.value)
-        } else {
-          setTime(userInput)
-          setUserInput(userInput)
-        }
-      }
-     
-     
-    },
-    [setTime],
-  );
-
+  }
 
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => e.target.select()
+  
+  const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+   
+    if(Number(e.target.value) !== time){
+      setTime(userInput)
+    }
+  }
+
+
+
 
   return (
     <div
@@ -92,14 +79,10 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           step={10}
           value={userInput}
           onChange={onTimeChange}
-          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          onClick={handleClick}
           onFocus={handleFocus}
-          onKeyDown={handleKeydown}
-          
-          
-         
-        
-      
+          onBlur={handleBlur}
         />
       </fieldset>
       -
@@ -112,7 +95,6 @@ export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
           max={2000}
           step={10}
           defaultValue={2000}
-          onFocus={handleFocus}
         />
         Duration
       </fieldset>
