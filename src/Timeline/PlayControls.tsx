@@ -2,24 +2,42 @@ import React, { useState } from "react";
 
 type PlayControlsProps = {
   time: number;
+  duration: number;
   setTime: (time: number) => void;
+  setDuration: (duration: number) => void;
 };
 
-export const PlayControls = ({ time, setTime }: PlayControlsProps) => {
+export const PlayControls = ({ time, setTime, duration, setDuration}: PlayControlsProps) => {
   // TODO: implement time <= maxTime
 
   const [userInput, setUserInput] = useState(time);
+  const [userDurationInput, setUserDurationInput] = useState(duration);
 
-  console.log('userInput', userInput)
+  console.log('duraiton', duration)
   const onTimeChange = 
     (e: React.ChangeEvent<HTMLInputElement>) => {
 
-const inputString = e.target.value.replace(/^0+/, '')
+      const inputString = e.target.value.replace(/^0+/, '')
 
       if(inputString){
         setUserInput(parseInt(inputString))
       }
   
+    };
+
+    const onDurationChange = 
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+
+      let inputString = e.target.value.replace(/^0+/, '')
+      if(parseInt(inputString) > 6000){
+        setDuration(6000)
+        setUserDurationInput(6000)
+      } else{
+        if(inputString){
+          setUserDurationInput(parseInt(inputString))
+        }
+        setDuration(parseInt(inputString))
+      }  
     };
 
   const handleKeyDown =
@@ -91,10 +109,13 @@ const inputString = e.target.value.replace(/^0+/, '')
           className="bg-gray-700 px-1 rounded"
           type="number"
           data-testid="max-time"
+          value={userDurationInput}
           min={100}
-          max={2000}
+          max={6000}
           step={10}
           defaultValue={2000}
+          onChange={onDurationChange}
+
         />
         Duration
       </fieldset>
