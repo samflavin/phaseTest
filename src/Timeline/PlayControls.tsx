@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 type PlayControlsProps = {
   time: number;
@@ -13,7 +13,11 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
   const [userInput, setUserInput] = useState(time);
   const [userDurationInput, setUserDurationInput] = useState(duration);
 
-  console.log('duraiton', duration)
+  useEffect(() => {
+    setUserInput(time)
+  }, [time, setTime]);
+
+  
   const onTimeChange = 
     (e: React.ChangeEvent<HTMLInputElement>) => {
 
