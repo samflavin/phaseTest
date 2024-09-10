@@ -10,6 +10,9 @@ export const Timeline = () => {
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
+  const [trackPercentage, setTrackPercentage] = useState(0);
+  const [keyframePercentage, setKeyframePercentage] = useState(0);
+
   return (
     <div>
       <header>{time}</header>
@@ -21,8 +24,8 @@ export const Timeline = () => {
       
       <PlayControls time={time} setTime={setTime} duration={duration} setDuration={setDuration} />
       <Ruler  duration={duration} setTime={setTime} />
-      <TrackList />
-      <KeyframeList duration={duration} />
+      <TrackList  trackPercentage={trackPercentage} setTrackPercentage={setTrackPercentage} keyframePercentage={keyframePercentage} setKeyframePercentage={setKeyframePercentage} />
+      <KeyframeList duration={duration} trackPercentage={trackPercentage} setTrackPercentage={setTrackPercentage} keyframePercentage={keyframePercentage} setKeyframePercentage={setKeyframePercentage} />
       <Playhead time={time} />
     </div>
     </div>

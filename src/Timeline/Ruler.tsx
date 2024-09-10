@@ -16,30 +16,13 @@ export const Ruler = ({duration, setTime}: RulerProps) => {
 
   const handleDrag =
     (e: any) => {
-
-      if(mouseDown === true) {
-        setTime(e.clientX - 316)
-       }
-
-      
+      if(!mouseDown) {      
+        return
+      }
+      e.preventDefault()
+      setTime(e.clientX - 316)  
+    
   }
-  const handleMouseDown =
-  (e: any) => {
-   console.log('down', e.target)
-    setMouseDown(true)
-}
-const handleMouseUp =
-(e: any) => {
-  console.log('up', e.target)
-  setMouseDown(false)
-}
-
-// const checkForMouseDown =
-// (e: any) => {
-//   if(mouseDown === true) {
-//     handleDrag(e)
-//   }
-// }
 
 
   return (
@@ -49,13 +32,18 @@ const handleMouseUp =
       border-b border-solid border-gray-700 
       overflow-x-auto overflow-y-hidden"
       data-testid="ruler" 
- 
+
     >
       <div className={`h-6 rounded-md bg-white/25`}
             style={{width:  `${duration}px`}}
-            onMouseUp={handleMouseUp}
-            onMouseDown={handleMouseDown}
+            onMouseUp={() => {  
+              setMouseDown(false)}}
+            onMouseDown={()=>{
+              setMouseDown(true)}}
             onMouseMove={handleDrag}
+             onMouseLeave={()=>{
+              setMouseDown(false)}}
+
       ></div>
     </div>
   );
