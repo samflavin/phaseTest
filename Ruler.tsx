@@ -3,26 +3,17 @@ import  { useState, useEffect } from "react";
 type RulerProps = {
   duration: number;
   setTime: (duration: number) => void;
-
-
 };
-
-
 
 export const Ruler = ({duration, setTime}: RulerProps) => {
   // TODO: implement mousedown and mousemove to update time and Playhead position
-
-  
    const [mouseDown, setMouseDown] = useState(Boolean);
-
 
     useEffect(() => {
       const handleMouseUp = () => {
       setMouseDown(false)
       };
-
       window.addEventListener('mouseup', handleMouseUp);
-
       return () => {
         window.removeEventListener('mouseup', handleMouseUp);
       };
@@ -36,7 +27,6 @@ export const Ruler = ({duration, setTime}: RulerProps) => {
     }
   }
   
-
   return (
   
     <div
