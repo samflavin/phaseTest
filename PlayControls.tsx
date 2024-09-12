@@ -16,7 +16,6 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
 
   const onTimeChange = 
     (e: React.ChangeEvent<HTMLInputElement>) => {
-
       const inputString = e.target.value.replace(/^0+/, '')
 
       if(inputString){
@@ -31,7 +30,6 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
 
     // All of the duration inputs functionaliy is kinda sudo/ half done as I felt it was redundant work from the 
     //time input challenges and didnt find time to finish up.
-
     const checkTimeAgainstDuration = () => {
       if(userDurationInput < time) {
         setUserInput(userDurationInput)
@@ -41,34 +39,26 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
 
     const onDurationChange = 
     (e: React.ChangeEvent<HTMLInputElement>) => {
-
-
       let inputString = e.target.value.replace(/^0+/, '')
       if(parseInt(inputString) > 6000){       
         setDuration(6000)
         setUserDurationInput(6000)
       } else{
         if(inputString){
-          
-          console.log(1)
           setUserDurationInput(parseInt(inputString))
         }
-        console.log(2)
         setDuration(parseInt(inputString))
       }  
-      
       checkTimeAgainstDuration()
     };
 
   const handleKeyDown =
     (e: any) => {
-      //console.log(e.key)
       if(e.key === 'Enter'){
         let roundedInput = roundToTen()
         if(roundedInput > 2000 || roundedInput > duration ) {
           roundedInput = duration
         }
-      
         setUserInput(roundedInput)
         setTime(Number(roundedInput));
         e.target.blur()
@@ -91,8 +81,7 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
   const handleClick =
     (e: any) => {
       e.target.select()
-        if(e.target.value && Number(e.target.value) !== time  ) {
-          
+        if(e.target.value && Number(e.target.value) !== time  ) {     
           setTime(Number(userInput));
         }
   }
@@ -102,8 +91,7 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
   const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
    
     if(Number(e.target.value) !== time){
-      const roundedInput = roundToTen()
-      
+      const roundedInput = roundToTen() 
       setUserInput(roundedInput)
       setTime(roundedInput)
     }
