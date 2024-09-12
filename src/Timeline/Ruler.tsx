@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import  { useState, useEffect } from "react";
 
 type RulerProps = {
   duration: number;
@@ -12,18 +12,30 @@ type RulerProps = {
 export const Ruler = ({duration, setTime}: RulerProps) => {
   // TODO: implement mousedown and mousemove to update time and Playhead position
 
-  const [mouseDown, setMouseDown] = useState(false);
+  
+   const [mouseDown, setMouseDown] = useState(Boolean);
 
-  const handleDrag =
-    (e: any) => {
-      if(!mouseDown) {      
-        return
-      }
-      e.preventDefault()
-      setTime(e.clientX - 316)  
-    
+
+    useEffect(() => {
+      const handleMouseUp = () => {
+      setMouseDown(false)
+      };
+
+      window.addEventListener('mouseup', handleMouseUp);
+
+      return () => {
+        window.removeEventListener('mouseup', handleMouseUp);
+      };
+    }, []);
+
+  function handleMove(e:any) {
+    if(!mouseDown){
+      return
+    } else {
+      setTime(e.clientX - 316) 
+    }
   }
-
+  
 
   return (
   
@@ -32,17 +44,17 @@ export const Ruler = ({duration, setTime}: RulerProps) => {
       border-b border-solid border-gray-700 
       overflow-x-auto overflow-y-hidden"
       data-testid="ruler" 
+      style={{userSelect: 'none'}}
 
     >
-      <div className={`h-6 rounded-md bg-white/25`}
-            style={{width:  `${duration}px`}}
-            onMouseUp={() => {  
+      <div className={`ruler h-6 rounded-md bg-white/25`}
+            style={{width:  `${duration}px`, userSelect: 'text'}}
+             onMouseUp={() => { 
               setMouseDown(false)}}
-            onMouseDown={()=>{
-              setMouseDown(true)}}
-            onMouseMove={handleDrag}
-             onMouseLeave={()=>{
-              setMouseDown(false)}}
+             onMouseDown={()=>{
+               setMouseDown(true)}}
+              onMouseMove={(e) => { 
+                handleMove(e)}}        
 
       ></div>
     </div>
