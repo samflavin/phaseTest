@@ -1,29 +1,4 @@
-// type TracklistProps = {
-//   duration: number;
-//   setTime: (duration: number) => void;
-//   trackPercentage: number;
-//   setTrackPercentage: (trackPercentage: number) => void;
-//   keyframePercentage: number
-//   setKeyframePercentage: (keyframePercentage: number) => void;
-
-// };
-
 export const TrackList = () => {
-  // TODO: implement scroll sync with `KeyframeList`
-
-
-  // const handleMasterScroll = (e) => {
-  //   let slave = e.target.parentNode.querySelector(".slave");
-  //   let master = e.target;
-  //   let height = master.scrollHeight - master.clientHeight;
-  //   let percentage = (master.scrollTop / height) * 100;
-  //   let slaveHeight = slave.scrollHeight - slave.clientHeight;
-  //   let newSlavePosition = Math.ceil((master.scrollTop / height) * slaveHeight);
-  //   setMasterPercentage(percentage);
-  //   slave.scroll({
-  //     top: newSlavePosition
-  //   });
-  // };
 
   return (
     <div
