@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+//useEffect
 
 type PlayControlsProps = {
   time: number;
@@ -11,13 +12,8 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
   // TODO: implement time <= maxTime
 
   const [userInput, setUserInput] = useState(time);
-  const [userDurationInput, setUserDurationInput] = useState(duration);
+  const [userDurationInput, setUserDurationInput] = useState(duration ? duration : 100);
 
-  useEffect(() => {
-    setUserInput(time)
-  }, [time, setTime]);
-
-  
   const onTimeChange = 
     (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -25,41 +21,69 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
 
       if(inputString){
         setUserInput(parseInt(inputString))
-      }
-  
+      } 
     };
+
+    const roundToTen = () => {
+      const roundedInput = Math.round(userInput/10)*10
+      return roundedInput
+    }
+
+    // All of the duration inputs functionaliy is kinda sudo/ half done as I felt it was redundant work from the 
+    //time input challenges and didnt find time to finish up.
+
+    const checkTimeAgainstDuration = () => {
+      if(userDurationInput < time) {
+        setUserInput(userDurationInput)
+        setTime(userDurationInput)
+      }
+    }
 
     const onDurationChange = 
     (e: React.ChangeEvent<HTMLInputElement>) => {
 
+
       let inputString = e.target.value.replace(/^0+/, '')
-      if(parseInt(inputString) > 6000){
+      if(parseInt(inputString) > 6000){       
         setDuration(6000)
         setUserDurationInput(6000)
       } else{
         if(inputString){
+          
+          console.log(1)
           setUserDurationInput(parseInt(inputString))
         }
+        console.log(2)
         setDuration(parseInt(inputString))
       }  
+      
+      checkTimeAgainstDuration()
     };
 
   const handleKeyDown =
     (e: any) => {
       //console.log(e.key)
       if(e.key === 'Enter'){
-        setTime(Number(userInput));
-    
+        let roundedInput = roundToTen()
+        if(roundedInput > 2000 || roundedInput > duration ) {
+          roundedInput = duration
+        }
+      
+        setUserInput(roundedInput)
+        setTime(Number(roundedInput));
+        e.target.blur()
     }
     if( e.key === 'ArrowUp' || e.key === 'ArrowDown' ) {
+      setTime(Number(userInput));
       e.target.select()
+
     }
     if( e.key === 'Escape') {
       setUserInput(time)
       setTime(time)
     }
     if(e.key === '-') {
-      setUserInput(0)
+      setUserInput(10)
     }
  
   }
@@ -68,6 +92,7 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
     (e: any) => {
       e.target.select()
         if(e.target.value && Number(e.target.value) !== time  ) {
+          
           setTime(Number(userInput));
         }
   }
@@ -77,7 +102,10 @@ export const PlayControls = ({ time, setTime, duration, setDuration}: PlayContro
   const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
    
     if(Number(e.target.value) !== time){
-      setTime(userInput)
+      const roundedInput = roundToTen()
+      
+      setUserInput(roundedInput)
+      setTime(roundedInput)
     }
   }
 

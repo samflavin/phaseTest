@@ -21,8 +21,7 @@ export const Timeline = () => {
   }) );
 
   return (
-    <div>
-      <header>{time}</header>
+  
     <div
       className="relative h-[300px] w-full grid grid-cols-[300px_1fr] grid-rows-[40px_1fr] 
     bg-gray-800 border-t-2 border-solid border-gray-700"
@@ -35,7 +34,5 @@ export const Timeline = () => {
       <KeyframeList duration={duration}  />
       <Playhead time={time} />
     </div>
-    </div>
-
   );
 };
