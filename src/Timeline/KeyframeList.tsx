@@ -2,13 +2,12 @@ import { Segment } from "./Segment";
 
 type KeyframeProps = {
   duration: number;
-  trackPercentage: number;
-  setTrackPercentage: (trackPercentage: number) => void;
-  keyframePercentage: number
-  setKeyframePercentage: (keyframePercentage: number) => void;
-
+  // trackPercentage: number;
+  // setTrackPercentage: (trackPercentage: number) => void;
+  // keyframePercentage: number
+  // setKeyframePercentage: (keyframePercentage: number) => void;
 };
-export const KeyframeList = ({ duration, trackPercentage, setTrackPercentage, keyframePercentage, setKeyframePercentage}: KeyframeProps) => {
+export const KeyframeList = ({ duration}: KeyframeProps) => {
   // TODO: implement scroll sync with `Ruler` and `TrackList`
 
   return (

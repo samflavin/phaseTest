@@ -10,8 +10,15 @@ export const Timeline = () => {
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const [trackPercentage, setTrackPercentage] = useState(0);
-  const [keyframePercentage, setKeyframePercentage] = useState(0);
+  const divs = document.querySelectorAll( 'div' );
+
+  divs.forEach(div => div.addEventListener( 'scroll', () => {  
+    divs.forEach(d => {
+      d.scrollTop = div.scrollTop;
+      d.scrollLeft = div.scrollLeft;
+    
+    });   
+  }) );
 
   return (
     <div>
@@ -24,8 +31,8 @@ export const Timeline = () => {
       
       <PlayControls time={time} setTime={setTime} duration={duration} setDuration={setDuration} />
       <Ruler  duration={duration} setTime={setTime} />
-      <TrackList  trackPercentage={trackPercentage} setTrackPercentage={setTrackPercentage} keyframePercentage={keyframePercentage} setKeyframePercentage={setKeyframePercentage} />
-      <KeyframeList duration={duration} trackPercentage={trackPercentage} setTrackPercentage={setTrackPercentage} keyframePercentage={keyframePercentage} setKeyframePercentage={setKeyframePercentage} />
+      <TrackList   />
+      <KeyframeList duration={duration}  />
       <Playhead time={time} />
     </div>
     </div>
